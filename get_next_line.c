@@ -6,7 +6,7 @@
 /*   By: rmerzak <rmerzak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 16:29:16 by rmerzak           #+#    #+#             */
-/*   Updated: 2021/12/05 17:52:08 by rmerzak          ###   ########.fr       */
+/*   Updated: 2021/12/05 18:03:43 by rmerzak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ char *ft_ptr_after_new_line(char *str)
 		i++;
 	}
 	s = (char *)malloc(sizeof(char) * (l + 1));
+	if (!s)
+		return NULL;
 	i = i - l + 1;
 	l = 0;
 	while (str[i] != '\0')
@@ -105,6 +107,12 @@ char	*get_next_line(int fd)
 		return NULL;
 	str = ft_return_new_line(Static);
 	Static = ft_ptr_after_new_line(Static);
+	if(str[0] == '\0')
+	{
+		free(Static);
+		free(str);
+		return	(NULL);
+	}
 	return str;
 }
 
