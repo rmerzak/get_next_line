@@ -6,33 +6,31 @@
 /*   By: rmerzak <rmerzak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 16:29:16 by rmerzak           #+#    #+#             */
-/*   Updated: 2021/12/05 18:03:43 by rmerzak          ###   ########.fr       */
+/*   Updated: 2021/12/05 22:48:59 by rmerzak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-char	*get_line_with_n(char *str,int fd)
+
+char	*get_line_with_n(char *str, int fd)
 {
 	char	*ret;
-	int p;
+	int		p;
 
-	//ret = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	ret = malloc(BUFFER_SIZE + 1);
+	ret = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!ret)
 		return (NULL);
 	p = 1;
-	while (!ft_strchr(str,'\n') && p != 0)
+	while (!ft_strchr(str, '\n') && p != 0)
 	{
-		if (fd == -1)
-			return NULL;
-		p = read(fd , ret, BUFFER_SIZE);
+		p = read(fd, ret, BUFFER_SIZE);
 		if (p == -1)
 		{
 			free(ret);
-			return NULL;
+			return (NULL);
 		}
 		ret[p] = '\0';
-		str = ft_strjoin(str,ret);
+		str = ft_strjoin(str, ret);
 	}
 	free(ret);
 	return (str);
@@ -41,92 +39,86 @@ char	*get_line_with_n(char *str,int fd)
 char	*ft_return_new_line(char *str)
 {
 	char	*s;
-	int 	i;
+	int		i;
 
 	i = 0;
-	if (str[0] == '\0')
+	if (!str)
 		return (NULL);
-	while (str[i] != '\n')
+	while (str[i] != '\n' && str[i])
 		i++;
 	s = (char *)malloc(sizeof(char) * (i + 2));
 	if (!s)
-		return NULL;
+		return (NULL);
 	i = 0;
-	while(str[i]!= '\n' && str[i] != '\0')
-	{	
+	while (str[i] && str[i] != '\n')
+	{
 		s[i] = str[i];
 		i++;
 	}
 	if (str[i] == '\n')
-		s[i] = '\n';
+		s[i++] = '\n';
 	s[i] = '\0';
 	return (s);
-	
 }
 
-char *ft_ptr_after_new_line(char *str)
+char	*ft_ptr_after_new_line(char *str)
 {
-	int i;
-	int l;
-	char *s;
-	
+	int		i;
+	int		l;
+	char	*s;
+
 	i = 0;
 	l = 0;
-	while (str[i] != '\n')
+	while (str[i] != '\n' && str[i])
 		i++;
-	while(str[i] != '\0')
+	if (str[i] == '\0')
 	{
-		l++;
-		i++;
+		free(str);
+		return (NULL);
 	}
-	s = (char *)malloc(sizeof(char) * (l + 1));
+	s = (char *)malloc(sizeof(char) * (ft_strlen(str) - i + 1));
 	if (!s)
-		return NULL;
-	i = i - l + 1;
-	l = 0;
+		return (NULL);
+	i++;
 	while (str[i] != '\0')
-	{
-		s[l]=str[i];
-		i++;
-		l++;
-	}
+		s[l++] = str[i++];
 	s[l] = '\0';
 	free(str);
 	return (s);
 }
-	
 
 char	*get_next_line(int fd)
 {
-	static char	*Static;
+	static char	*stati;
 	char		*str;
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return NULL;
-	Static = get_line_with_n(Static,fd);
-	if (Static == NULL)
-		return NULL;
-	str = ft_return_new_line(Static);
-	Static = ft_ptr_after_new_line(Static);
-	if(str[0] == '\0')
+		return (NULL);
+	stati = get_line_with_n(stati, fd);
+	if (stati == NULL)
+		return (NULL);
+	str = ft_return_new_line(stati);
+	stati = ft_ptr_after_new_line(stati);
+	if (str[0] == '\0')
 	{
-		free(Static);
+		free(stati);
 		free(str);
-		return	(NULL);
+		return (NULL);
 	}
-	return str;
+	return (str);
 }
 
+/*
+int main()
+{
+	char *str;
+	int fd;
+	fd = open("42", O_RDONLY);
 
-// int main()
-// {
-// 	char *str;
-// 	int fd;
-// 	fd = open("42", O_RDONLY);
-
-// 	str = get_next_line(fd);
-// 	printf("%s\n",str);
-// 	str = get_next_line(fd);
-// 	printf("%s\n",str);
-// 	str = get_next_line(fd);
-// 	printf("%s\n",str);
-// }
+	str = get_next_line(fd);
+	printf("%s\n",str);
+	str = get_next_line(fd);
+	printf("%s\n",str);
+	str = get_next_line(fd);
+	printf("%s\n",str);
+}*/

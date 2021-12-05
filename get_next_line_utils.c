@@ -6,7 +6,7 @@
 /*   By: rmerzak <rmerzak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 16:29:49 by rmerzak           #+#    #+#             */
-/*   Updated: 2021/12/05 15:53:36 by rmerzak          ###   ########.fr       */
+/*   Updated: 2021/12/05 22:52:50 by rmerzak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ size_t	ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strchr(char *str,int c)
+char	*ft_strchr(char *str, int c)
 {
 	size_t	i;
-	char *s;
+	char	*s;
 
 	i = 0;
 	s = (char *) str;
 	if (str == NULL)
-		return NULL;
+		return (NULL);
 	while (s[i] != '\0')
 	{
 		if (s[i] == (char )c)
@@ -40,9 +40,9 @@ char	*ft_strchr(char *str,int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char *s1,char *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	char 	*s;
+	char	*s;
 	size_t	l;
 	size_t	k;
 
@@ -55,18 +55,14 @@ char	*ft_strjoin(char *s1,char *s2)
 	}	
 	s = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!s)
-		return	(NULL);
+		return (NULL);
 	while (s1[k] != '\0')
 	{
 		s[k] = s1[k];
 		k++;
 	}
 	while (s2[l] != '\0')
-	{
-		s[k] = s2[l];
-		k++;
-		l++;
-	}
+		s[k++] = s2[l++];
 	s[k] = '\0';
 	free (s1);
 	return (s);
