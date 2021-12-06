@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmerzak <rmerzak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rmerzak <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/01 16:29:16 by rmerzak           #+#    #+#             */
-/*   Updated: 2021/12/06 12:24:10 by rmerzak          ###   ########.fr       */
+/*   Created: 2021/12/06 12:07:04 by rmerzak           #+#    #+#             */
+/*   Updated: 2021/12/06 13:58:07 by rmerzak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_line_with_n(char *str, int fd)
 {
@@ -89,36 +89,21 @@ char	*ft_ptr_after_new_line(char *str)
 
 char	*get_next_line(int fd)
 {
-	static char	*stati;
+	static char	*stati[10240];
 	char		*str;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stati = get_line_with_n(stati, fd);
-	if (stati == NULL)
+	stati[fd] = get_line_with_n(stati[fd], fd);
+	if (stati[fd] == NULL)
 		return (NULL);
-	str = ft_return_new_line(stati);
-	stati = ft_ptr_after_new_line(stati);
+	str = ft_return_new_line(stati[fd]);
+	stati[fd] = ft_ptr_after_new_line(stati[fd]);
 	if (str[0] == '\0')
 	{
-		free(stati);
+		free(stati[fd]);
 		free(str);
 		return (NULL);
 	}
 	return (str);
 }
-
-/*
-int main()
-{
-	char *str;
-	int fd;
-	fd = open("42", O_RDONLY);
-
-	str = get_next_line(fd);
-	printf("%s\n",str);
-	str = get_next_line(fd);
-	printf("%s\n",str);
-	str = get_next_line(fd);
-	printf("%s\n",str);
-}*/
