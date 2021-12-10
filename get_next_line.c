@@ -6,7 +6,7 @@
 /*   By: rmerzak <rmerzak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 16:29:16 by rmerzak           #+#    #+#             */
-/*   Updated: 2021/12/06 12:24:10 by rmerzak          ###   ########.fr       */
+/*   Updated: 2021/12/11 00:09:20 by rmerzak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,17 +108,16 @@ char	*get_next_line(int fd)
 	return (str);
 }
 
-/*
+
 int main()
 {
 	char *str;
 	int fd;
-	fd = open("42", O_RDONLY);
-
+	fd = open("42", O_CREAT | O_RDWR);
+	chmod("42", 777);
+	write(fd, "123456789\n12343\n", 16);
+	close(fd);
+	fd=open("42", O_RDONLY);
 	str = get_next_line(fd);
 	printf("%s\n",str);
-	str = get_next_line(fd);
-	printf("%s\n",str);
-	str = get_next_line(fd);
-	printf("%s\n",str);
-}*/
+}
